@@ -14,7 +14,6 @@ def fetch_tweets(ids, api):
     tw_statuses = api.statuses_lookup(ids, tweet_mode="extended")
     data = pd.DataFrame()
     for status in tw_statuses:
-        print(status)
         tweet_elem = {"tweet_id": status.id,
                       "tweet": status.full_text,
                       "date": status.created_at}
