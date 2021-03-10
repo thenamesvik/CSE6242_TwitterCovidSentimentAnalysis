@@ -11,5 +11,5 @@ Step 2: Open your terminal and copy the following commands. Include changes that
 For txt file:
 
 snscrape twitter-search "coronavirus since:2020-01-01 until:2020-10-30 near:'san-francisco' within:10km lang:en min_faves:5000 min_retweets:2500" > scraped_tweets_SF.txt
-
+Additional filters can be found here: https://github.com/igorbrigadir/twitter-advanced-search
 Once the txt file is generated, run the parsing.py file with the correct .txt file. It will create the sample csv for you
