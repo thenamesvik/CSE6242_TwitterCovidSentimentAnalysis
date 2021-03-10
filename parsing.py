@@ -6,26 +6,24 @@ def fetch_tweets(ids, api):
     # When I looped through all the 3400 ids, the API is giving an error.
     # Therefore, I tried to process the ids by batch or chunks.
 
-    total_count = len(ids)
-    chunks = (total_count - 1) // 50 + 1
-
     # We'll process only 50 entries because the statuses_lookup() method gives the statuses of IDs, up to 100 only..
 
     tw_statuses = api.statuses_lookup(ids, tweet_mode="extended")
     data = pd.DataFrame()
     for status in tw_statuses:
+        # print(status)
         tweet_elem = {"tweet_id": status.id,
                       "tweet": status.full_text,
                       "date": status.created_at}
         data = data.append(tweet_elem, ignore_index=True)
-    data.to_csv("scraped_tweets.csv", mode="a")
+    data.to_csv("scraped_tweets_SF.csv", mode="a")
 
     return data
 
 
-def extract_tweets(consumer_key, consumer_secret, access_token, access_token_secret):
+def extract_tweets():
 
-    tweet_url = pd.read_csv("tweet_ids.txt", index_col=None, header=None, names=["tweet_urls"])
+    tweet_url = pd.read_csv("scraped_tweets_SF.txt", index_col=None, header=None, names=["tweet_urls"])
     # Extract the tweet id
     af = lambda x: x["tweet_urls"].split("/")[-1]
     # store tweet id in another column
@@ -44,9 +42,13 @@ def main():
     auth.set_access_token(access_token, access_token_secret)
     api = tweepy.API(auth, wait_on_rate_limit=True)
 
-    ids = extract_tweets(consumer_key, consumer_secret, access_token, access_token_secret)
-    final_df = fetch_tweets(ids, api)
-    print(final_df)
+    ids = extract_tweets()
+    total_count = len(ids)
+    chunks = (total_count - 1) // 50 + 1
+    for i in range(chunks):
+        subset_ids = ids[i * 50:(i + 1) * 50]
+        final_df = fetch_tweets(subset_ids, api)
+        print(final_df.size)
 
 
 if __name__ == "__main__":
