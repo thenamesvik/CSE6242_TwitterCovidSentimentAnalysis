@@ -1,5 +1,6 @@
 import pandas as pd
 import tweepy
+import config
 
 
 def fetch_tweets(ids, api):
@@ -33,10 +34,10 @@ def extract_tweets():
 
 
 def main():
-    consumer_key = 'RrRUvq8ymjbusOQ4RFUNoPW7s'
-    consumer_secret = 'W4pQUzhHTD0m5i5sNH8oxdNsbKoz7shspwVRx9t7DffWhRqKIv'
-    access_token = '1238274915431743489-rA3yM0ui9yTmxUGJiWlpU60e56Utk7'
-    access_token_secret = 'cQoCXkn6tbEdntZlt1vIcHdZIVqDvTIhSPHWiwkBbxtQ4'
+    consumer_key = config.consumer_key
+    consumer_secret = config.consumer_secret
+    access_token = config.access_token
+    access_token_secret = config.access_token_secret
 
     auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
     auth.set_access_token(access_token, access_token_secret)
